@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stop Watch</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: Poppins;
+    }
+
+    @font-face {
+      font-family: Poppins;
+      src: url(/Fonts/Poppins.ttf);
+    }
+
+    .StopWatch {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #3d9970;
+    }
+
+    .timeCounter .digit {
+      display: inline-block;
+      font-weight: bold;
+      color: #fff;
+      font-size: 65px;
+      width: 81px;
+      text-align: center;
+    }
+
+    .timeCounter .text {
+      font-size: 25px;
+      font-weight: bold;
+      margin-right: 4px;
+      color: #111111;
+    }
+
+    .btnContainer {
+      margin-top: 20px;
+    }
+    .btnContainer button {
+      border: none;
+      border-radius: 0;
+      padding: 4px;
+      width: 85px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #ff4136;
+    }
+    .btnContainer #reset {
+      background-color: #cccc;
+      font-weight: bold;
+      color: #111;
+    }
+    .btnContainer .active {
+      display: none;
+    }
+    @media screen and (max-width: 500px) {
+      .timeCounter .digit {
+        font-size: 49px;
+        width: 60px;
+      }
+
+      .timeCounter .text {
+        font-size: 16px;
+        margin-right: 0px;
+      }
+      .btnContainer button {
+        width: 65px;
+        font-size: 15px;
+      }
+    }
+    @media screen and (max-width: 360px) {
+      .timeCounter .digit {
+        font-size: 44px;
+        width: 55px;
+      }
+
+      .timeCounter .text {
+        font-size: 15px;
+        margin-right: 0px;
+      }
+    }
+  </style>
+
+  <body>
+    <div class="StopWatch">
+      <div class="timeCounter">
+        <span class="digit" id="hours">00</span>
+        <span class="text">Hr</span>
+        <span class="digit" id="minutes">00</span>
+        <span class="text">Min</span>
+        <span class="digit" id="seconds">00</span>
+        <span class="text">Sec</span>
+        <span class="digit" id="count">00</span>
+      </div>
+      <div class="btnContainer">
+        <button id="start">Start</button>
+        <button id="stop" class="active">Stop</button>
+        <button id="reset">Reset</button>
+      </div>
+    </div>
+    <script>
+      let start = document.getElementById("start");
+      let stop = document.getElementById("stop");
+      let reset = document.getElementById("reset");
+      let digit = document.getElementsByClassName("digit");
+      let hours = 0;
+      let minutes = 0;
+      let seconds = 0;
+      let count = 0;
+      let timer;
+
+      start.onclick = function () {
+        timer = setInterval(() => {
+          count++;
+          if (count > 99) {
+            count = 0;
+            seconds++;
+          }
+          if (seconds > 59) {
+            minutes++;
+            seconds = 0;
+          }
+          if (minutes > 59) {
+            hours++;
+            minutes = 0;
+          }
+          let c = count;
+          let sec = seconds;
+          let min = minutes;
+          let hr = hours;
+
+          if (count < 10) {
+            c = "0" + count;
+          }
+          if (seconds < 10) {
+            sec = "0" + seconds;
+          }
+          if (minutes < 10) {
+            min = "0" + minutes;
+          }
+          if (hours < 10) {
+            hr = "0" + hours;
+          }
+
+          document.getElementById("count").innerText = c;
+          document.getElementById("seconds").innerText = sec;
+          document.getElementById("minutes").innerText = min;
+          document.getElementById("hours").innerText = hr;
+        }, 10);
+
+        start.classList.add("active");
+        stop.classList.remove("active");
+      };
+
+      stop.onclick = function () {
+        clearInterval(timer);
+        stop.classList.add("active");
+        start.classList.remove("active");
+      };
+
+      reset.onclick = function () {
+        count = 0;
+        seconds = 0;
+        minutes = 0;
+        hours = 0;
+        clearInterval(timer);
+        stop.classList.add("active");
+        start.classList.remove("active");
+        document.getElementById("count").innerText = "00";
+        document.getElementById("seconds").innerText = "00";
+        document.getElementById("minutes").innerText = "00";
+        document.getElementById("hours").innerText = "00";
+      };
+    </script>
+  </body>
+</html>
